@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>再次回到 PG模拟器 · 轻量导航</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(125deg, #fde4cf 0%, #f8d5b0 40%, #f5cba7 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1.2rem;
+            color: #3d2e24;
+        }
+
+        .page-wrapper {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255, 250, 240, 0.80);
+            backdrop-filter: blur(2px);
+            border-radius: 48px;
+            padding: 2rem 2.5rem;
+            box-shadow: 0 12px 30px rgba(120, 70, 40, 0.12);
+            transition: all 0.2s ease;
+        }
+
+        /* 顶部导航 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .site-id {
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            color: #6b4c3b;
+            background: #ebd9c8;
+            padding: 0.35rem 1rem;
+            border-radius: 40px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-size: 0.95rem;
+            color: #5a3f30;
+            padding: 0.25rem 0.2rem;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .nav-links a:hover {
+            border-bottom-color: #b28a6b;
+            color: #3a251b;
+        }
+
+        .nav-links a.highlight {
+            background: #dabfaa;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            border-bottom: none;
+            font-weight: 500;
+        }
+
+        .nav-links a.highlight:hover {
+            background: #c8aa91;
+            color: #2f1e16;
+        }
+
+        /* hero 区域 */
+        .hero {
+            margin-bottom: 3.2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 0.6rem;
+            color: #3b2a1e;
+            letter-spacing: -0.3px;
+        }
+
+        .hero .subhead {
+            font-size: 1.1rem;
+            color: #5f4a3a;
+            max-width: 70%;
+            line-height: 1.6;
+            border-left: 4px solid #c6a386;
+            padding-left: 1.2rem;
+            margin: 0.8rem 0 1.2rem;
+        }
+
+        .hero .subtext {
+            font-size: 0.98rem;
+            color: #685141;
+            background: #f1e4d8;
+            display: inline-block;
+            padding: 0.4rem 1.4rem;
+            border-radius: 30px;
+        }
+
+        /* 核心介绍卡片 */
+        .intro-card {
+            background: white;
+            border-radius: 28px;
+            padding: 2rem 2.2rem;
+            margin-bottom: 2.8rem;
+            box-shadow: 0 6px 14px rgba(150, 100, 60, 0.08);
+            line-height: 1.7;
+            color: #3f2e23;
+        }
+
+        .intro-card p {
+            margin-bottom: 1rem;
+        }
+
+        .intro-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .intro-card a {
+            color: #7a563b;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted #b99477;
+            transition: border 0.2s;
+        }
+
+        .intro-card a:hover {
+            border-bottom: 2px solid #7a563b;
+        }
+
+        /* 三个场景模块 */
+        .scenes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+            margin: 2.8rem 0 2.5rem;
+        }
+
+        .scene-item {
+            flex: 1 1 200px;
+            background: white;
+            border-radius: 28px;
+            padding: 1.8rem 1.6rem;
+            box-shadow: 0 4px 12px rgba(130, 80, 45, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .scene-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 22px rgba(110, 70, 35, 0.10);
+        }
+
+        .scene-item .emoji-marker {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+
+        .scene-item h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #3d291d;
+        }
+
+        .scene-item p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #5b4637;
+        }
+
+        /* 常见说明 (FAQ 摘要) */
+        .faq-summary {
+            background: white;
+            border-radius: 28px;
+            padding: 1.8rem 2rem;
+            margin: 2rem 0 2.5rem;
+        }
+
+        .faq-summary h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #3b291d;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .faq-list {
+            list-style: none;
+        }
+
+        .faq-list li {
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #eee4da;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .faq-list li:last-child {
+            border-bottom: none;
+        }
+
+        .faq-q {
+            font-weight: 600;
+            color: #4a3426;
+            min-width: 6.5rem;
+        }
+
+        .faq-a {
+            color: #5b4637;
+            line-height: 1.5;
+        }
+
+        .faq-a a {
+            color: #7a563b;
+            text-decoration: none;
+            border-bottom: 1px dotted #b99477;
+        }
+
+        .faq-a a:hover {
+            border-bottom: 2px solid #7a563b;
+        }
+
+        /* 收藏提示 */
+        .bookmark-tip {
+            background: #efe0d2;
+            border-radius: 40px;
+            padding: 1rem 1.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin: 2rem 0 1.2rem;
+            font-size: 0.95rem;
+            color: #4f3b2d;
+        }
+
+        .bookmark-tip span {
+            background: #dac2ae;
+            padding: 0.15rem 1rem;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+
+        /* 页脚 */
+        .footer-note {
+            margin-top: 1.5rem;
+            text-align: center;
+            border-top: 1px solid #e6d4c4;
+            padding-top: 1.8rem;
+            font-size: 0.9rem;
+            color: #6d5847;
+            letter-spacing: 0.3px;
+        }
+
+        .footer-note a {
+            color: #6d4d38;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-note a:hover {
+            text-decoration: underline;
+        }
+
+        /* 响应式细节 */
+        @media (max-width: 700px) {
+            .page-wrapper {
+                padding: 1.5rem 1.2rem;
+            }
+
+            .hero h1 {
+                font-size: 1.7rem;
+            }
+
+            .hero .subhead {
+                max-width: 100%;
+                font-size: 1rem;
+            }
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .scene-item {
+                flex: 1 1 100%;
+            }
+
+            .faq-list li {
+                flex-direction: column;
+                gap: 0.2rem;
+            }
+
+            .faq-q {
+                min-width: auto;
+            }
+
+            .bookmark-tip {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 460px) {
+            body {
+                padding: 1rem 0.6rem;
+            }
+            .page-wrapper {
+                border-radius: 32px;
+                padding: 1.2rem 1rem;
+            }
+            .intro-card, .faq-summary {
+                padding: 1.5rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+    <!-- 顶部导航 -->
+    <nav class="navbar">
+        <div class="site-id">✦ portal-pgsimulator</div>
+        <div class="nav-links">
+            <a href="#intro">重访</a>
+            <a href="#scenes">场景</a>
+            <a href="#faq">说明</a>
+            <a href="#" class="highlight">收藏</a>
+        </div>
+    </nav>
+
+    <!-- hero -->
+    <div class="hero">
+        <h1>再次打开，依旧熟悉。</h1>
+        <div class="subhead">
+            收藏夹里的老朋友，<br>
+            每次回来都像走进一个安静的角落。
+        </div>
+        <div class="subtext">轻量导航 · 持续关注</div>
+    </div>
+
+    <!-- 核心介绍 (自然嵌入 PG模拟器 链接) -->
+    <div class="intro-card" id="intro">
+        <p>
+            有时你会想起一个地方，不需要太多理由，就是想回来看一眼。<a href="https://portal-pgsimulator.com">PG模拟器</a>
+            就是这样一个地方——它不喧哗，也不催促，只是安静地待在收藏夹里，等着你某天再次点开。
+        </p>
+        <p>
+            页面还是那个温和的界面，结构清晰，节奏舒缓。无论隔了多久回来，你总能快速找到自己上次停留的位置。
+            这也许就是所谓的「持久感」——一个你愿意反复回来、也愿意告诉朋友的存在。
+        </p>
+        <p>
+            如果你还没把它放进收藏夹，或许这次可以试试看。把链接留在手边，下次想起时，就不用翻来覆去地找了。
+        </p>
+    </div>
+
+    <!-- 三个场景模块 -->
+    <div class="scenes" id="scenes">
+        <div class="scene-item">
+            <span class="emoji-marker">📌</span>
+            <h3>再次访问</h3>
+            <p>隔了几周或几个月，再次打开时，界面依然是熟悉的样子。不用重新学习，直接进入状态。</p>
+        </div>
+        <div class="scene-item">
+            <span class="emoji-marker">🔖</span>
+            <h3>收藏为日常</h3>
+            <p>把链接固定到浏览器书签栏或手机主屏幕，成为一种安静的日常陪伴，随时可以回来。</p>
+        </div>
+        <div class="scene-item">
+            <span class="emoji-marker">👀</span>
+            <h3>持续关注</h3>
+            <p>偶尔回来看看，感受那份不变的稳定。没有推送，没有打扰，只有你主动选择的时候才打开。</p>
+        </div>
+    </div>
+
+    <!-- 常见说明 (FAQ 摘要) -->
+    <div class="faq-summary" id="faq">
+        <h2>◈ 常见说明</h2>
+        <ul class="faq-list">
+            <li>
+                <span class="faq-q">这是哪一类站点？</span>
+                <span class="faq-a">它更像一个轻量的工具页面，提供整洁的交互环境，适合反复回访。</span>
+            </li>
+            <li>
+                <span class="faq-q">需要注册或登录吗？</span>
+                <span class="faq-a">不需要。打开即用，没有强制账户体系，保持访问的纯粹性。</span>
+            </li>
+            <li>
+                <span class="faq-q">如何快速回到这里？</span>
+                <span class="faq-a">把 <a href="https://portal-pgsimulator.com">PG模拟器</a> 添加到浏览器书签，或者直接记在备忘录里。</span>
+            </li>
+            <li>
+                <span class="faq-q">内容会频繁变化吗？</span>
+                <span class="faq-a">不会。站点追求稳定和克制，变化是有节奏的，不会让人感到措手不及。</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 收藏提示 -->
+    <div class="bookmark-tip">
+        <span>💡 再次提醒</span> 
+        如果觉得以后还会回来，不妨现在就收藏。一个小动作，下次就不用再搜索或回忆了。
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer-note">
+        <a href="https://portal-pgsimulator.com">PG模拟器</a> · 轻量导航页 
+        <span style="display: inline-block; margin-left: 0.8rem; opacity: 0.6;">8076e5fdb510a550</span>
+    </div>
+</div>
+</body>
+</html>
